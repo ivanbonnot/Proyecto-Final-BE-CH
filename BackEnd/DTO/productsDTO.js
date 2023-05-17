@@ -7,7 +7,7 @@ const addNewProductDTO = async( prod ) => {
   return 
 }
 
-const getProductsDTO = async() => {
+const getAllProductsDTO = async() => {
   const products = factoryDAO()
   const allProducts = await products.getProducts()
   return allProducts
@@ -38,5 +38,5 @@ const deleteAllProductsDTO = async() => {
 }
 
 
-module.exports = { getProductsDTO, getProductByIdDTO, deleteProductDTO, deleteAllProductsDTO, addNewProductDTO, updateProductDTO }
+module.exports = { getAllProductsDTO, getProductByIdDTO, deleteProductDTO, deleteAllProductsDTO, addNewProductDTO, updateProductDTO }
 

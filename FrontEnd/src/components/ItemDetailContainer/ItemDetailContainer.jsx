@@ -25,8 +25,8 @@ export function ItemDetailContainer() {
   }
 
   useEffect(() => {
-    const productosCollection = collection(db, 'items');
-    const refDoc = doc(productosCollection, id);
+    const productsCollection = collection(db, 'items');
+    const refDoc = doc(productsCollection, id);
     getDoc(refDoc)
       .then(result => {
         const producto = {

@@ -1,30 +1,15 @@
-const { getProductsDTO, getProductByIdDTO, deleteProductDTO, addNewProductDTO, updateProductDTO } = require('../DTO/productsDTO')
+const { getAllProductsDTO, getProductByIdDTO, deleteProductDTO, addNewProductDTO, updateProductDTO } = require('../DTO/productsDTO')
 
 
-const newProductController = async (productToAdd) => {
-  await addNewProductDTO(productToAdd)
-  return
-}
+const addNewProductController = (productToAdd) => addNewProductDTO(productToAdd)
 
-const getAllProductsController = async () => {
-  const products = await getProductsDTO()
-  return products
-}
+const getAllProductsController = () => getAllProductsDTO()
+ 
+const getProductByIdController = (id) => getProductByIdDTO(id)
 
-const getProductByIdController = async (id) => {
-  const product = await getProductByIdDTO(id)
-  return product
-}
+const updateProductController = (id, productToUpdate) => updateProductDTO(id, productToUpdate)
 
-const updateProductController = async (id, productToUpdate) => {
-  const prodToUpd = await updateProductDTO(id, productToUpdate)
-  return prodToUpd
-}
-
-const delProductByIdController = async (id) => {
-  await deleteProductDTO(id)
-  return
-}
+const deleteProductController = (id) => deleteProductDTO(id)
 
 
-module.exports = { newProductController, getAllProductsController, getProductByIdController, delProductByIdController, updateProductController }
+module.exports = { addNewProductController, getAllProductsController, getProductByIdController, deleteProductController, updateProductController }

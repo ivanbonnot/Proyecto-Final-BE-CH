@@ -1,99 +1,104 @@
-const { Router } = require("express")
-const { newProductController, getAllProductsController, getProductByIdController, delProductByIdController, updateProductController } = require('../../controllers/productsController')
+const { Router } = require("express");
+const {
+  addNewProductController,
+  getAllProductsController,
+  getProductByIdController,
+  deleteProductController,
+  updateProductController,
+} = require("../../controllers/productsController");
 
 const productsRouter = Router();
 
-const adm = true
+const adm = true;
 
-productsRouter.get('/', async (req, res) => {
-    const productos = await getAllProductsController()
+productsRouter.get("/", async (req, res) => {
+  const products = await getAllProductsController();
+  res.json({ products });
+});
 
-    res.json(productos);
-})
+productsRouter.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  const productById = await getProductByIdController(id);
 
+  if (productById) {
+    res.json(productById);
+  } else {
+    res.status(404).send({ error: "Product not found" });
+  }
+});
 
-productsRouter.get('/:id', async (req, res) => {
-    const { id } = req.params
-    const productById = await getProductByIdController(id)
-    console.log(id)
+productsRouter.post("/", async (req, res) => {
+  if (adm) {
+    const { title, description, code, thumbnail, price, stock } = req.body;
+
+    if (!title || !description || !code || !thumbnail || !price || !stock) {
+      res.status(400).send({ error: "Falta completar campos" });
+      return;
+    }
+
+    const product = {
+      timestamp: Date.now(),
+      title,
+      description,
+      code,
+      thumbnail,
+      price,
+      stock,
+    };
+
+    await addNewProductController(product);
+    res.json(product);
+  } else {
+    res.send('Error: 403 Ruta: "api/products" Método: "POST" No Autorizada');
+  }
+});
+
+productsRouter.put("/:id", async (req, res) => {
+  if (adm) {
+    const { id } = req.params;
+    const { title, description, code, thumbnail, price, stock } = req.body;
+
+    const productUpdate = {
+      timestamp: Date.now(),
+      title,
+      description,
+      code,
+      thumbnail,
+      price,
+      stock,
+    };
+
+    const productById = await getProductByIdController(id);
+
     if (productById) {
-        res.json(productById)
+      await updateProductController(id, productUpdate);
+      res.send(productUpdate);
     } else {
-        res.status(404).send({ error: 'Product not found' })
+      res.status(404).send({ error: "Product not found with ID: ${id}" });
     }
-})
+  } else {
+    res.send(
+      'Error: 403 Ruta: "api/products/:Id" Método: "PUT" No Autorizada '
+    );
+  }
+});
 
+productsRouter.delete("/:id", async (req, res) => {
+  if (adm) {
+    const { id } = req.params;
+    const productById = await getProductByIdController(id);
 
-productsRouter.post('/', async (req, res) => {
-    if (adm) {
-        const { title, description, code, thumbnail, price, stock } = req.body;
-
-        const product = {
-            timestamp: Date.now(),
-            title,
-            description,
-            code,
-            thumbnail,
-            price,
-            stock
-        };
-
-        await newProductController(product)
-        res.json(product)
-
+    if (productById) {
+     await deleteProductController(id);
+      res.status(200).json({ deleted: true });
     } else {
-        res.send('Error: 403 Ruta: "api/productos" Método: "POST" No Autorizada')
+      res.status(404).json({ error: "Product not found with ID: ${id}" });
     }
-})
-
-
-productsRouter.put('/:id', async (req, res) => {
-    if (adm) {
-        const { id } = req.params
-        const { title, description, code, thumbnail, price, stock } = req.body;
-
-        const productUpdate = {
-            timestamp: Date.now(),
-            title,
-            description,
-            code,
-            thumbnail,
-            price,
-            stock
-        };
-
-        const productById = await getProductByIdController(id)
-
-        if (productById) {
-            await updateProductController(id, productUpdate)
-            res.send(productUpdate)
-        } else {
-            res.status(404).send({ error: 'id invalid / missing fields' })
-        }
-    } else {
-        res.send('Error: 403 Ruta: "api/productos/:Id" Método: "PUT" No Autorizada ')
-    }
-})
-
-
-productsRouter.delete('/:id', async (req, res) => {
-    if (adm) {
-        const { id } = req.params
-        const productById = await getProductByIdController(id)
-    
-        if (productById) {
-            const deleteProdById = await delProductByIdController(id)
-            res.status(200).json({ deleted: deleteProdById })
-        } else {
-            res.status(404).json({ error: 'Product not found' })
-        }
-
-    } else {
-        res.send('Error: 403 Ruta: "api/productos/:Id" Método: "DELETE" No Autorizada ')
-    }
-
-})
-
+  } else {
+    res.send(
+      'Error: 403 Ruta: "api/products/:Id" Método: "DELETE" No Autorizada '
+    );
+  }
+});
 
 module.exports = productsRouter;
-

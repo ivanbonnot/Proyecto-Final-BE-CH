@@ -1,28 +1,29 @@
-const mongoose = require('mongoose')
-
+const logger = require("./log/log4js");
+const mongoose = require("mongoose");
 
 let isConnected;
 
-const connectToDb = async (db) => {
+const connectToDb = (db) => {
+  if (!isConnected && db == "mongo") {
+    try {
+      mongoose.set("strictQuery", true);
+      mongoose
+        .connect(
+          `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.xvejx.gcp.mongodb.net/test`,
+          { useNewUrlParser: true, useUnifiedTopology: true }
+        )
 
-    if (!isConnected && db == "mongo") {
-        try {
-            mongoose.set('strictQuery', true);
-            await mongoose.connect(`mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.xvejx.gcp.mongodb.net/test`,
-                { useNewUrlParser: true, useUnifiedTopology: true })
-
-                .then(() => {
-                    isConnected = true
-                    console.log('MongoDB Connected', isConnected);
-                })
-                .catch(err => console.log(err))
-            return;
-        }
-        catch (e) {
-            console.log(e.message);
-        }
-        return;
+        .then(() => {
+          isConnected = true;
+          logger.info("MongoDB Connected", isConnected);
+        })
+        .catch((err) => logger.error(err));
+      return;
+    } catch (e) {
+      logger.warn(e.message);
     }
-}
+    return;
+  }
+};
 
-module.exports = connectToDb ;
+module.exports = connectToDb;

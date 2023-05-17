@@ -5,17 +5,17 @@ import '../Cart/Cart.css'
 
 const Cart = () => {
 
-    const { removeItem, clear, totalCompra, productosCarrito } = useContext(CartContext);
+    const { removeItem, clear, totalCompra, productsCarrito } = useContext(CartContext);
 
     return (
         <>
-            {productosCarrito.length === 0 ?
+            {productsCarrito.length === 0 ?
                 <div className="noProduct">
                     <h3> ¡Tu carrito está vacío! </h3>
                     <button><Link to="/">Ir a compras</Link></button>
                 </div>
                 : <div className="product">
-                    <h1 > Detalle de su carrito  </h1> {productosCarrito.map(item =>
+                    <h1 > Detalle de su carrito  </h1> {productsCarrito.map(item =>
                         <div key={item.id}>
                             <div className="detailContainer">
                                 <h3 id={item.id}> {item.title}

@@ -1,13 +1,13 @@
 const chai = require("chai");
 const expect = chai.expect;
 const supertest = require("supertest");
-const request = supertest(`http://localhost:8080/api/productos`);
+const request = supertest(`http://localhost:8080/api/products`);
 
 const idProd = "64471d0f41735c33b9e9d194";
 const idProdToDelete = "64483e1505cf27689b01bce2";
 const idFake = "64471ebac33e0842bca999b9";
 
-describe("GET /api/productos", () => {
+describe("GET /api/products", () => {
   it("should return an array of products", (done) => {
     request
       .get("/")
@@ -20,7 +20,7 @@ describe("GET /api/productos", () => {
   });
 });
 
-describe("GET by id /api/productos/id", () => {
+describe("GET by id /api/products/id", () => {
   it("should return status 200 and a product ID", (done) => {
     request
       .get(`/${idProd}`)
@@ -44,7 +44,7 @@ describe("GET by id /api/productos/id", () => {
   });
 });
 
-describe("POST /api/productos", () => {
+describe("POST /api/products", () => {
   it("should return status 200 and add a product", async () => {
     const response = await request.post("/").send({
       title: "Producto de prueba",
@@ -60,7 +60,7 @@ describe("POST /api/productos", () => {
   });
 });
 
-describe("PUT /api/productos/id", () => {
+describe("PUT /api/products/id", () => {
   it("should return status 200 and update a product", async () => {
     const response = await request.put(`/${idProd}`).send({
       title: "Producto de actualizado",
@@ -90,7 +90,7 @@ describe("PUT /api/productos/id", () => {
   });
 });
 
-describe("DELETE /api/productos/id", () => {
+describe("DELETE /api/products/id", () => {
   it("should return status 200 and delete the product", async () => {
     const response = await request.delete(`/${idProdToDelete}`);
     expect(response.status).to.be.eq(200);

@@ -20,7 +20,7 @@ function NavBar() {
               <Link to={'/category/2'}>Filamentos</Link>
             </li>
             <li>
-              <Link to={'/'}>Productos</Link>
+              <Link to={'/'}>products</Link>
             </li>
             
           </ul>

@@ -6,7 +6,7 @@ const { Schema, model } = mongoose
 
 const cartSchema = new Schema({
     timestamp: { type: Number, require: true },
-    productos: { type: Array, required: true }
+    products: { type: Array, required: true }
 })
 
 
@@ -26,7 +26,7 @@ const chatSchema = new Schema({
 
 
 
-const productoSchema = new Schema({
+const productschema = new Schema({
     timestamp: { type: Number, require: true },
     title: { type: String },
     thumbnail: { type: String },
@@ -77,7 +77,7 @@ userSchema.pre('save', function (next) {
 
 
 const userModel = model('User', userSchema)
-const productModel = model('Productos', productoSchema)
+const productModel = model('products', productschema)
 const chatModel = model('Chat', chatSchema);
 const cartModel = model('Cart', cartSchema)
 

@@ -2,7 +2,7 @@ import React, { useState, createContext, useEffect } from "react";
 
 
 const CartContext = createContext({
-    productosCarrito: []
+    productsCarrito: []
 });
 
 
@@ -60,7 +60,7 @@ const CartProvider = ({ children }) => {
 
     return (
         <CartContext.Provider value={{
-            productosCarrito: compra,
+            productsCarrito: compra,
             addItem,
             removeItem,
             clear,

@@ -9,7 +9,7 @@ import '../Brief/Brief.css'
 export const Brief = () => {
     const formCont = document.querySelector('.formContainer')
 
-    const { productosCarrito, clear, totalCompra } = useContext(CartContext)
+    const { productsCarrito, clear, totalCompra } = useContext(CartContext)
     const [idOrden, setIdOrden] = useState()
     const [loading] = useState(false)
     const [buyer, setBuyer] = useState({
@@ -35,10 +35,10 @@ export const Brief = () => {
             const order = await addDoc(col, data)
             
             //Actualizando stcok en firebase
-            const productos = data.items.map(item => {
+            const products = data.items.map(item => {
                 const idProd = item.id
                 const stockRef = doc(db, 'items', idProd)
-                const stock = productosCarrito.map(prod => { return { stock: prod.stock } })
+                const stock = productsCarrito.map(prod => { return { stock: prod.stock } })
                 const newStock = {
                     stock: (stock[0].stock - item.Cantidad).toString()
                 }
@@ -68,7 +68,7 @@ export const Brief = () => {
         } else {
             const dia = serverTimestamp()
             const total = totalCompra()
-            const items = productosCarrito.map(prod => { return { id: prod.id, Titulo: prod.title, Precio: prod.price, Cantidad: prod.quantity } })
+            const items = productsCarrito.map(prod => { return { id: prod.id, Titulo: prod.title, Precio: prod.price, Cantidad: prod.quantity } })
             const data = { buyer, dia, items, total }
             generarPedido(data)
         }

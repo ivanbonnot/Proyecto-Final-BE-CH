@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 
-const url = "http://localhost:8080/api/productos";
+const url = "http://localhost:8080/api/products";
 const id = "643ef72cff6e78b2c1631de6"
 
 const getProducts = async () => {

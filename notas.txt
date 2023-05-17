@@ -1,0 +1,3 @@
+Faltantes o pendientes:
+
+Falta Middlewares para el adm

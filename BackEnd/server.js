@@ -35,7 +35,7 @@ const baseProcces = () => {
     const httpServer = new HTTPServer(app);
     const io = new IOServer(httpServer);
 
-    const {  getAllProductsController, newProductController } = require('./controllers/productsController')
+    const {  getAllProductsController, addNewProductController } = require('./controllers/productsController')
     const { addChatController, getAllChatsController} = require('./controllers/chatsController')
 
     //Settings
@@ -52,7 +52,7 @@ const baseProcces = () => {
 
 
     app.use(session({
-        store: MongoStore.create({ mongoUrl: 'mongodb+srv://coderhouse:coderhouse123@cluster0.xvejx.gcp.mongodb.net/test' }),
+        store: MongoStore.create({ mongoUrl: `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.xvejx.gcp.mongodb.net/test` }),
         secret: '123456',
         resave: true,
         saveUninitialized: true,
@@ -73,8 +73,8 @@ const baseProcces = () => {
     
     //Routes
     app.use("/info", infoRouter)
-    app.use("/api/productos", productsRouter)
-    app.use("/api/productos-test", productsRouterTest)
+    app.use("/api/products", productsRouter)
+    app.use("/api/products-test", productsRouterTest)
 
     //--- Ruta inexistente
     /*
@@ -93,13 +93,13 @@ const baseProcces = () => {
     io.on('connection', async socket => {
         console.log('Nuevo cliente conectado!');
 
-        // carga inicial de productos
-        socket.emit('productos', await getAllProductsController());
+        // carga inicial de products
+        socket.emit('products', await getAllProductsController());
 
-        // actualizacion de productos
+        // actualizacion de products
         socket.on('update', async producto => {
-            newProductController(producto)
-            io.sockets.emit('productos', await getAllProductsController());
+            addNewProductController(producto)
+            io.sockets.emit('products', await getAllProductsController());
         })
 
         // carga inicial de mensajes
