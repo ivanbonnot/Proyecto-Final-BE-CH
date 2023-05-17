@@ -1,0 +1,13 @@
+#root {
+  height: 110vh;
+  
+}
+
+body {
+  background-color: rgb(241, 241, 241) !important;
+  cursor: default;
+}
+
+.item-container {
+  height: 100vh;
+}

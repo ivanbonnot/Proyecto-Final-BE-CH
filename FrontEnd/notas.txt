@@ -1,0 +1,7 @@
+https://www.3dparts.com.ar/impresoras-3d/
+
+instalar 
+npm install --save react-spinners
+
+
+.find
