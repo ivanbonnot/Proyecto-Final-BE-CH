@@ -81,5 +81,4 @@ const productModel = model('products', productschema)
 const chatModel = model('Chat', chatSchema);
 const cartModel = model('Cart', cartSchema)
 
-
 module.exports = {cartModel, chatModel, productModel, userModel}

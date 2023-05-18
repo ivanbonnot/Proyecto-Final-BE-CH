@@ -35,7 +35,6 @@ const baseProcces = () => {
     const httpServer = new HTTPServer(app);
     const io = new IOServer(httpServer);
 
-    const {  getAllProductsController, addNewProductController } = require('./controllers/productsController')
     const { addChatController, getAllChatsController} = require('./controllers/chatsController')
 
     //Settings
@@ -66,7 +65,7 @@ const baseProcces = () => {
     const PORT = 8080
     const server = httpServer.listen(PORT, () => {
         connectToDb("mongo")
-        console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
+        logger.info(`Servidor http escuchando en el puerto ${server.address().port}`)
     })
     server.on('error', error => logger.error(`Error en servidor ${error}`))
 
@@ -91,17 +90,7 @@ const baseProcces = () => {
 
     //websocket
     io.on('connection', async socket => {
-        console.log('Nuevo cliente conectado!');
-
-        // carga inicial de products
-        socket.emit('products', await getAllProductsController());
-
-        // actualizacion de products
-        socket.on('update', async producto => {
-            addNewProductController(producto)
-            io.sockets.emit('products', await getAllProductsController());
-        })
-
+        logger.info('Nuevo cliente conectado!');
         // carga inicial de mensajes
         socket.emit('mensajes', await getAllChatsController());
 
@@ -119,15 +108,15 @@ const baseProcces = () => {
 if (config.mode != 'CLUSTER') {
 
     //-- Servidor FORK
-    console.log('Server en modo FORK')
-    console.log('-------------------')
+    logger.info('Server en modo FORK')
+    logger.info('-------------------')
     baseProcces()
 } else {
 
     //-- Servidor CLUSTER   
     if (cluster.isPrimary) {
-        console.log('Server en modo CLUSTER')
-        console.log('----------------------')
+        logger.info('Server en modo CLUSTER')
+        logger.info('----------------------')
         for (let i = 0; i < numCPUs; i++) { // creo tantos procesos como cpus tengo
             cluster.fork()
         }

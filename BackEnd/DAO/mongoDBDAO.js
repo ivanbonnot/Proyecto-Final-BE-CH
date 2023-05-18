@@ -38,7 +38,7 @@ class mongoDBDAO {
 
     deleteProduct = async (id) => await productModel.deleteOne({ _id: id });
 
-    deleteAllProducts = async ()=> await productModel.deleteMany();
+    deleteAllProducts = async () => await productModel.deleteMany();
 
     updateProduct = async (id, productToUpdate) => {
         return await productModel.updateOne(
@@ -105,7 +105,8 @@ class mongoDBDAO {
     };
 
 
-
+    //___CHATS___//
+    
     async getAllChats() {
 
         const array = {
